@@ -9,7 +9,7 @@
 ---
 ### Concedernos acceso a la imagen de Docker publicada
 
-**DockerHub Público**: https://hub.docker.com/repository/docker/adamdanielf/arroyo-2025/general
+**DockerHub Público**: https://hub.docker.com/r/adamdanielf/arroyo-2025/tags
 
 **Uso**:
 
