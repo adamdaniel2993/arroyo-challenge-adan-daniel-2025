@@ -44,7 +44,6 @@ docker pull public.ecr.aws/c9t3l6c5/arroyo-ecr:<SHA>
 * **ALB access logs** en **S3** (auditoría de tráfico).
 * **RDS logs** exportados a **CloudWatch Logs** (con aws_db_parameter_group).
 * **Health checks** (ALB y ECS) para resiliencia de capa 7 + proceso.
-* **Acceso sin SSH** mediante SSM Session Manager (se evita exponer 22/tcp).
 * **Pipeline de despliegue** con **GitHub Actions** (bootstrap de backend, `terraform apply`, build & push a ECR público).
 
 ---
@@ -59,7 +58,22 @@ Ir a **Actions** → **challengeTerraform** → **Run workflow**, completar inpu
 
 El pipeline **bootstrap** el backend (S3+DynamoDB), ejecuta `terraform init` con `--backend-config`, corre `terraform apply` (crea ECR público y/o infra), y luego hace **login** → **build** → **push a ECR público**.
 
-**Opción manual (local):**
+## ⚠️ Nota cuenta de AWS
+
+El workflow de GitHub Actions está configurado con mis credenciales de AWS mediante **Repository Secrets** (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`).
+
+Si ejecutan el pipeline tal cual, desplegará en **mi cuenta**. Para evitarlo, por favor usen su propia cuenta:
+
+#### Opción A — Ejecutar el pipeline en su cuenta de AWS
+
+1. Hagan **fork** del repositorio a su organización/usuario.
+2. En el fork, vayan a **Settings → Secrets and variables → Actions → New repository secret** y creen:
+
+   * `AWS_ACCESS_KEY_ID`
+   * `AWS_SECRET_ACCESS_KEY`
+
+
+**Opción manual (local): Utilizando sus credenciales de AWS**
 ##### Backend remoto (S3 + DynamoDB ya existentes)
 ```
 terraform init \
@@ -86,10 +100,21 @@ docker push "${ECR_URI}:$(git rev-parse --short HEAD)"
 
 **Locking de estado**: DynamoDB tabla `terraform-state-locks` para evitar ejecuciones concurrentes sobre el mismo state.
 
-Buenas prácticas: usar `terraform init -migrate-state` si cambia la config del backend; no editar el state manualmente.
+**Buenas prácticas**: usar `terraform init -migrate-state` si cambia la config del backend; no editar el state manualmente.
 
 ---
 
+### Gestión del .terraform.lock.hcl:
+En este reto la ejecución de Terraform ocurre en GitHub Actions. El lock file se genera en el runner durante **terraform init** y no se commitea por defecto.
+**Para asegurar reproducibilidad**:
+
+El pipeline ejecuta `terraform init` sin `-upgrade`, **respetando versiones fijadas en required_providers**. Por lo que se asegura la reproducibilidad ya que se respeta las versiones configuradas
+
+**(Independiente del lock file)** el **state se guarda en S3** y se bloquea con DynamoDB, evitando ejecuciones concurrentes.
+
+En todo caso se puede crear un workflow que cree el lock y lo comitee al repo
+
+--- 
 ### (Contexto de seguridad SSH)
 
 En la configuracion del security group configure mis ips publicas para ser capaz de acceder via ssh ya que mencionan este punto en la prueba
