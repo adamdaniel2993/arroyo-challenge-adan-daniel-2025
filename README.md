@@ -37,7 +37,6 @@ docker pull adamdanielf/arroyo-2025:latest
 
 * **Logs de contenedor a CloudWatch (driver `awslogs`)** en `/ecs/<proyecto>/app`.
 * **Container Insights** habilitado (métricas y troubleshooting).
-* **ALB access logs** en **S3** (auditoría de tráfico).
 * **RDS logs** exportados a **CloudWatch Logs** (con aws_db_parameter_group).
 * **Health checks** (ALB y ECS) para resiliencia de capa 7 + proceso.
 * **Pipeline de despliegue** con **GitHub Actions** (bootstrap de backend, `terraform apply`, build & push a ECR público).
