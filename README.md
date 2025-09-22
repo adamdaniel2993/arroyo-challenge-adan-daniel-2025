@@ -9,16 +9,12 @@
 ---
 ### Concedernos acceso a la imagen de Docker publicada
 
-**ECR Público**: public.ecr.aws/c9t3l6c5/arroyo-ecr:latest
+**DockerHub Público**: https://hub.docker.com/repository/docker/adamdanielf/arroyo-2025/general
 
 **Uso**:
 
 ```
-docker pull public.ecr.aws/c9t3l6c5/arroyo-ecr:latest
-
-o por commit:
-
-docker pull public.ecr.aws/c9t3l6c5/arroyo-ecr:<SHA>
+docker pull adamdanielf/arroyo-2025:latest
 ```
 
 ---
@@ -57,6 +53,10 @@ Workflow: `.github/workflows/challengeTerraform.yaml`
 Ir a **Actions** → **challengeTerraform** → **Run workflow**, completar inputs (p. ej. `aws_region=us-east-1`, `tf_state_bucket=<bucket-s3>`, `tf_lock_table=terraform-state-locks`, `tf_state_key=arroyo-challenge/terraform.tfstate`).
 
 El pipeline **bootstrap** el backend (S3+DynamoDB), ejecuta `terraform init` con `--backend-config`, corre `terraform apply` (crea ECR público y/o infra), y luego hace **login** → **build** → **push a ECR público**.
+
+Si lo quieren ejecutar en mi cuenta no hay problema solo notifiquenme via correo y estoy atento para correr un destroy y dejarles todo limpio
+
+
 
 ## ⚠️ Nota cuenta de AWS
 
