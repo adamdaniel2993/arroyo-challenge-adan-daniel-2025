@@ -5,7 +5,7 @@ terraform {
       source = "hashicorp/aws"
     }
   }
-   backend "s3" {} # Se llena por CLI con -backend-config
+  backend "s3" {} # Se llena por CLI con -backend-config
 }
 
 provider "aws" {

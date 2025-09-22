@@ -15,12 +15,12 @@ resource "aws_security_group" "arroyo_ec2_sg" {
 }
 
 resource "aws_security_group_rule" "from_my_ip" {
-  type                     = "ingress"
-  from_port                = 22
-  to_port                  = 22
-  protocol                 = "tcp"
-  cidr_blocks              = ["186.6.136.3/32"]
-  security_group_id        = aws_security_group.arroyo_ec2_sg.id
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = ["186.6.136.3/32"]
+  security_group_id = aws_security_group.arroyo_ec2_sg.id
 }
 
 resource "aws_security_group_rule" "from_lb" {
