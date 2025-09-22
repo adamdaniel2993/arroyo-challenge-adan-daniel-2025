@@ -28,7 +28,7 @@ on:
         description: 'Nombre del repo ECR que crea Terraform'
         default: arroyo-ecr
         required: true
-      docker_context:
+      docker_dir:
         description: 'Carpeta del Dockerfile'
         default: docker_image
         required: true
@@ -164,14 +164,14 @@ jobs:
         env:
           ECR_URI: ${{ needs.apply.outputs.ecr_uri }}
           IMAGE_TAG: ${{ env.IMAGE_TAG }}
-          DOCKER_CONTEXT: ${{ inputs.docker_context }}
+          DOCKER_DIR: ${{ inputs.docker_dir }}
           DOCKERFILE: ${{ inputs.dockerfile }}
         run: |
           set -euo pipefail
           SHORT_SHA="${IMAGE_TAG::12}"
-          docker build -f "${DOCKER_CONTEXT}/${DOCKERFILE}" \
+          docker build -f "${DOCKER_DIR}/${DOCKERFILE}" \
                        -t "${ECR_URI}:${SHORT_SHA}" \
                        -t "${ECR_URI}:latest" \
-                       "${DOCKER_CONTEXT}"
+                       "${DOCKER_DIR}"
           docker push "${ECR_URI}:${SHORT_SHA}"
           docker push "${ECR_URI}:latest"
