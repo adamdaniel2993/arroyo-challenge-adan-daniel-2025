@@ -4,9 +4,9 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'infra/**'
+      - '*.tf'
       - 'docker_image/**'
-      - '.github/workflows/deploy.yml'
+      - '.github/workflows/challengeTerraform.yaml'
 
   workflow_dispatch:
     inputs:
@@ -120,7 +120,6 @@ jobs:
           if terraform output -raw ecr_repository_url >/dev/null 2>&1; then
             ECR_URI=$(terraform output -raw ecr_repository_url)
           else
-            # Fallback por nombre si no hay output
             NAME="${{ inputs.ecr_repo_name }}"
             set +e
             ECR_URI=$(aws ecr describe-repositories --repository-names "$NAME" \
