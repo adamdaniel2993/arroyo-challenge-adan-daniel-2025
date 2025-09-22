@@ -54,7 +54,7 @@ Ir a **Actions** → **challengeTerraform** → **Run workflow**, completar inpu
 
 El pipeline **bootstrap** el backend (S3+DynamoDB), ejecuta `terraform init` con `--backend-config`, corre `terraform apply` (crea ECR público y/o infra), y luego hace **login** → **build** → **push a ECR público**.
 
-Si lo quieren ejecutar en mi cuenta no hay problema solo notifiquenme via correo y estoy atento para correr un destroy y dejarles todo limpio
+Si lo quieren ejecutar en mi cuenta no hay problema solo notifiquenme via correo y estoy atento para correr un destroy
 
 
 
