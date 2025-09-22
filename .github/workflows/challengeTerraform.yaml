@@ -115,7 +115,6 @@ jobs:
         id: tfout
         shell: bash
         run: |
-          # Requiere output "ecr_repository_url"
           if terraform output -raw ecr_repository_url >/dev/null 2>&1; then
             ECR_URI=$(terraform output -raw ecr_repository_url)
           else
