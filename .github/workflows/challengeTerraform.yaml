@@ -6,7 +6,6 @@ on:
     paths:
       - '*.tf'
       - 'docker_image/**'
-      - '.github/workflows/challengeTerraform.yaml'
 
   workflow_dispatch:
     inputs:
